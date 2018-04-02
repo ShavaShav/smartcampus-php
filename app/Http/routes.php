@@ -15,18 +15,10 @@ Route::group(['prefix' => 'api' ], function ()
 {
 	Route::post('user/login', 'Auth\AuthController@login');
 	Route::post('user/register', 'Auth\AuthController@register');
-	
+
 	Route::get('events', 'EventController@index');
 	Route::get('events/{id}', 'EventController@show');
 	Route::post('events', 'EventController@store');
 	Route::put('events/{id}', 'EventController@update');
 	Route::delete('events/{id}', 'EventController@delete');
 });
-
-Route::get('login', 'Auth\AuthController@login');
-Route::post('register', 'Auth\AuthController@register');
-
-
-Route::controllers([
-   'password' => 'Auth\PasswordController',
-]);
