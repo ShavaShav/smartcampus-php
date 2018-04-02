@@ -22,3 +22,11 @@ Route::group(['prefix' => 'api' ], function ()
 	Route::put('events/{id}', 'EventController@update');
 	Route::delete('events/{id}', 'EventController@delete');
 });
+
+Route::get('login', 'Auth\AuthController@login');
+Route::post('register', 'Auth\AuthController@register');
+
+
+Route::controllers([
+   'password' => 'Auth\PasswordController',
+]);
