@@ -1,27 +1,68 @@
-## Laravel PHP Framework
+## Setup
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+### Install Apache/MySQL
+MyWeb's Laravel is pinned to version 5.1, so need to use version PHP 5.6.34!
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
+See https://github.com/SmartCampusUWindsor/smart-campus/wiki/Setting-up-local-dev-environment for information
 
-Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+### Install Laravel and composer
+Composer 
+Download and install from https://getcomposer.org/download/
 
-## Official Documentation
+Laravel
+```
+composer global require "laravel/installer"
+```
 
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
+### Clone and install dependencies
 
-## Contributing
+```
+git clone https://github.com/SmartCampusUWindsor/smartcampus-api.git
+cd smartcampus-api
+composer install
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+## Running dev server
 
-## Security Vulnerabilities
+### Start MySQL
+Create a database if nonexistent, and place credentials in `.env`:
+```
+DB_HOST=localhost
+DB_DATABASE=smartcampus
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+Create tables:
+```
+php artisan migrate
+```
 
-### License
+Seed with mock data (for testing):
+```
+php artisan db:seed
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+### Start developer server
+
+```
+php artisan serve
+```
+
+
+## Making requests
+
+Use curl/[Postman](https://www.getpostman.com/) to make requests to localhost:8000/api
+
+```
+curl -H "Content-Type: application/json" \
+     -X POST \
+     -d '{"username": "zachshaver",email":"zach@uwindsor.ca","password":"password1234"}' \
+     http://localhost:8000/api/user/register
+```
+
+API spec can be found [here](https://github.com/SmartCampusUWindsor/smartcampus-api/wiki/API-Spec)
+
+## Deploying to myWeb
+
+Upload contents of repo to server's `/public_html` folder (different domain than front-end)
