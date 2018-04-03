@@ -19,6 +19,7 @@ class Kernel extends HttpKernel
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
         // Uncomment in production!
         //\App\Http\Middleware\VerifyCsrfToken::class,
+        \App\Http\Middleware\Cors::class,
     ];
 
     /**
@@ -29,6 +30,7 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'cors' => \App\Http\Middleware\Cors::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
     ];
 }
