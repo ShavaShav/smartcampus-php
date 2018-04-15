@@ -15,17 +15,21 @@ class Cors
      */
     public function handle($request, Closure $next)
     {
-        header("Access-Control-Allow-Origin: *");
-
-        $headers = [
-            'Access-Control-Allow-Methods'=> 'POST, GET, PUT, DELETE',
-            'Access-Control-Allow-Headers'=> 'Content-Type, Authorization, Origin'
-        ];
-
         $response = $next($request);
 
-        foreach($headers as $key => $value)
-            $response->header($key, $value);
+        // For testing, disable CORs middleware
+        if (! env('APP_ENV', 'testing')) {
+
+            header("Access-Control-Allow-Origin: *");
+
+            $headers = [
+                'Access-Control-Allow-Methods'=> 'POST, GET, PUT, DELETE',
+                'Access-Control-Allow-Headers'=> 'Content-Type, Authorization, Origin'
+            ];
+
+            foreach($headers as $key => $value)
+                $response->header($key, $value);
+        }
         
         return $response;
     }
