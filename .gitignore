@@ -1,5 +1,16 @@
-/vendor
-/node_modules
+# Created by https://www.gitignore.io/api/laravel
+
+### Laravel ###
+vendor/
+node_modules/
+npm-debug.log
+
+# Laravel 5 specific
+public_html/storage
+public_html/hot
+storage/*.key
+.env.*.php
+.env.php
+.env
 Homestead.yaml
 Homestead.json
-.env
