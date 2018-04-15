@@ -1,7 +1,12 @@
 <?php
 
+use Illuminate\Foundation\Testing\WithoutMiddleware;
+
 class TestCase extends Illuminate\Foundation\Testing\TestCase
 {
+    // Don't use middleware for tests
+    use WithoutMiddleware;
+
     /**
      * The base URL to use while testing the application.
      *
