@@ -24,7 +24,7 @@ composer install
 
 ## Running dev server
 
-### Start MySQL
+### Set up MySQL database
 Create a database if nonexistent, and place credentials in `.env`:
 ```
 DB_HOST=localhost
@@ -43,7 +43,7 @@ Seed with mock data (for testing):
 php artisan db:seed
 ```
 
-### Start developer server
+### Start developement server
 
 ```
 php artisan serve
@@ -65,4 +65,6 @@ API spec can be found [here](https://github.com/SmartCampusUWindsor/smartcampus-
 
 ## Deploying to myWeb
 
-Upload contents of repo to server's `/public_html` folder (different domain than front-end)
+Upload contents of repo to server's root folder (different domain than front-end). Alter the database credentials to be same as server.
+
+Laravel project has been modified to work with shared hosting on MyWeb (public folder is called public_html).
