@@ -25,10 +25,12 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request)
     {
+        $userData = $request->get('user');
+
         $newUser = $this->user->create([
-            'username' => $request->get('username'),
-            'email' => $request->get('email'),
-            'password' => bcrypt($request->get('password'))
+            'username' => $userData['username'],
+            'email' => $userData['email'],
+            'password' => bcrypt($userData['password'])
         ]);
 
         if (!$newUser) {
@@ -42,8 +44,14 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request)
     {
+        $userData = $request->get('user');
+
         // get user credentials: email, password
-        $credentials = $request->only('email', 'password');
+        $credentials = [ 
+            'email' => $userData['email'],
+            'password' => $userData['password']
+        ];
+        
         $token = null;
 
         try {
