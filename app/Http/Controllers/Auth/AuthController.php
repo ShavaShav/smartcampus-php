@@ -27,19 +27,20 @@ class AuthController extends Controller
     {
         $userData = $request->get('user');
 
-        $newUser = $this->user->create([
+        $user = $this->user->create([
             'username' => $userData['username'],
             'email' => $userData['email'],
             'password' => bcrypt($userData['password'])
         ]);
 
-        if (!$newUser) {
-            return response()->json(['failed_to_create_new_user'], 500);
+        if (!$user) {
+            return response()->json(['error' => 'failed_to_create_new_user'], 500);
         }
 
-        return response()->json([
-            'token' => $this->jwtauth->fromUser($newUser)
-        ]);
+        // Append token to User
+        $user['token'] = $this->jwtauth->fromUser($user);
+
+        return response()->json(compact('user'));
     }
 
     public function login(LoginRequest $request)
@@ -53,20 +54,25 @@ class AuthController extends Controller
         ];
         
         $token = null;
+        $user = null;
 
         try {
 
             $token = $this->jwtauth->attempt($credentials);
 
-            if (!$token) {
-                return response()->json(['invalid_email_or_password'], 422);
+            if ($token) {
+                // Get user from token, append token
+                $user = $this->jwtauth->toUser($token);
+                $user['token'] = $token;
+            } else {
+                return response()->json(['error' => 'invalid_email_or_password'], 422);
             }
 
         } catch (JWTAuthException $e) {
             
-            return response()->json(['failed_to_create_token'], 500);
+            return response()->json(['error' => 'failed_to_create_token'], 500);
         }
         
-        return response()->json(compact('token'));
+        return response()->json(compact('user'));
     }
 }
