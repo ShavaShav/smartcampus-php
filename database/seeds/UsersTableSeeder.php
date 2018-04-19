@@ -22,7 +22,7 @@ class UsersTableSeeder extends Seeder
 
         // Create "admin"
         User::create([
-            'name' => 'Administrator',
+            'username' => 'Administrator',
             'email' => 'admin@test.com',
             'password' => $password,
         ]);
@@ -30,7 +30,7 @@ class UsersTableSeeder extends Seeder
         // Create some regular users
         for ($i = 0; $i < 10; $i++) {
             User::create([
-                'name' => $faker->name,
+                'username' => $faker->name,
                 'email' => $faker->email,
                 'password' => $password,
             ]);
