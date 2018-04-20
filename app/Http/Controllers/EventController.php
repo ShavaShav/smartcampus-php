@@ -6,12 +6,13 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+
 use App\Event;
 
 class EventController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of all Events.
      *
      * @return Response
      */
@@ -21,17 +22,7 @@ class EventController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Store a newly created Event in the database.
      *
      * @param  Request  $request
      * @return Response
@@ -42,7 +33,7 @@ class EventController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified Event's JSON.
      *
      * @param  int  $id
      * @return Response
@@ -53,18 +44,7 @@ class EventController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
+     * Update the specified Event in the database.
      *
      * @param  Request  $request
      * @param  int  $id
@@ -78,7 +58,7 @@ class EventController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified Event from the database.
      *
      * @param  int  $id
      * @return Response
