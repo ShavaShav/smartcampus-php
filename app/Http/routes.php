@@ -26,5 +26,6 @@ Route::group(['prefix' => 'api', 'middleware' => 'cors'], function ()
 	Route::group(['middleware' => ['jwt.auth']], function()
 	{
 	    Route::post('user/logout', 'Auth\AuthController@logout');
+	    Route::get('user', 'Auth\AuthController@show');
 	});
 });

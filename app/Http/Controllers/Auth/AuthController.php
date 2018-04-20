@@ -89,4 +89,16 @@ class AuthController extends Controller
             return response()->json(['error' => 'failed_to_logout'], 500);
         }
     }
+
+    public function show(Request $request)
+    {
+        // Get user from bearer token
+        $token = $this->jwtauth->getToken();
+        $user = $this->jwtauth->toUser($token);
+
+        // Append token to User
+        $user['token'] = (string) $token;
+        
+        return response()->json(compact('user'));
+    }
 }
