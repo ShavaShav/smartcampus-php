@@ -75,4 +75,18 @@ class AuthController extends Controller
         
         return response()->json(compact('user'));
     }
+
+    public function logout(Request $request)
+    {
+        // Get token from header
+        $token = $this->jwtauth->getToken();
+
+        // Attempt to invalidate. User will need new token next time
+        try {
+            $this->jwtauth->invalidate($token);
+            return response()->json(['message'=> 'logout_successful']);
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'failed_to_logout'], 500);
+        }
+    }
 }
