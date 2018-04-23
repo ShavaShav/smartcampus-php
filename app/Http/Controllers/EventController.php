@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Http\Requests\NewEventRequest;
 use App\Http\Controllers\Controller;
 
 use App\Event;
+use JWTAuth;
 
 class EventController extends Controller
 {
+
     /**
      * Display a listing of all Events, most recent first.
      *
@@ -28,12 +31,23 @@ class EventController extends Controller
     /**
      * Store a newly created Event in the database.
      *
-     * @param  Request  $request
+     * @param  NewEventRequest  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(NewEventRequest $request)
     {
-        return Event::create($request->all());
+        $eventData = $request->get('event');
+
+        // Add user to event fields from token
+        $token = JWTAuth::getToken();
+        $eventData['author_id'] = JWTAuth::toUser($token)->id;
+
+        // Create in database.
+        $event = Event::create($eventData);
+
+        // Get the event with the author info for json response
+        $event = Event::with('author')->find($event->id);
+        return response()->json(compact('event'));
     }
 
     /**
@@ -45,7 +59,7 @@ class EventController extends Controller
     public function show($id)
     {
         $event = Event::with('author')->findOrFail($id);
-        
+
         return response()->json(compact('event'));
     }
 
