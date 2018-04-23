@@ -42,9 +42,11 @@ class EventController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show(Event $event)
+    public function show($id)
     {
-        return $event;
+        $event = Event::with('author')->findOrFail($id);
+        
+        return response()->json(compact('event'));
     }
 
     /**
