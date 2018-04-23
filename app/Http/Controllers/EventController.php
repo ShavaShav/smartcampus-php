@@ -83,10 +83,20 @@ class EventController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy(Event $event)
+    public function destroy($id)
     {
-        $event->delete();
+        $event = Event::findOrFail($id);
 
-        return response()->json(null, 204);
+        $token = JWTAuth::getToken();
+        $user = JWTAuth::toUser($token);
+
+        if ($event->author_id == $user->id) {
+            // Event belongs to user
+            $event->delete();
+
+            return response()->json(['message' => 'delete_successful'], 200);
+        } else {
+            return response()->json(['error' => 'delete_forbidden'], 403);
+        }
     }
 }
