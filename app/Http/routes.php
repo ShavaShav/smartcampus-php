@@ -19,8 +19,6 @@ Route::group(['prefix' => 'api', 'middleware' => 'cors'], function ()
 	Route::get('events', 'EventController@index');
 	Route::get('events/{id}', 'EventController@show');
 
-	Route::put('events/{id}', 'EventController@update');
-
 	// Authenticated routes
 	Route::group(['middleware' => ['jwt.auth']], function()
 	{
