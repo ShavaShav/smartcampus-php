@@ -12,13 +12,17 @@ use App\Event;
 class EventController extends Controller
 {
     /**
-     * Display a listing of all Events.
+     * Display a listing of all Events, most recent first.
      *
      * @return Response
      */
     public function index()
     {
-        return Event::with('author')->get();
+        $events = Event::with('author')
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+
+        return response()->json(compact('events'));
     }
 
     /**
