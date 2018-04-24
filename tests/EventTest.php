@@ -75,14 +75,14 @@ class EventTest extends TestCase
         
         // Assert on actual event details
         $this->seeJsonContains([
-            'id' => (string) $this->eventId,
+            'id' => $this->eventId,
             'title' => "Test Event",
             'time' => $this->eventTime, 
             'location' => "Erie Hall",
             'link' => "http://uwindsor.ca/",
             'body' => "A super fun test event.",
             'author' => [
-                'id' => (string) $this->userId,
+                'id' => $this->userId,
                 'username' => 'TestUser',
                 'email' => 'test_user@fakemail.com'
             ]
@@ -122,14 +122,14 @@ class EventTest extends TestCase
 
         // should see the created event in list
         $this->seeJsonContains([
-            'id' => (string) $this->eventId,
+            'id' => $this->eventId,
             'title' => "Test Event",
             'time' => $this->eventTime, 
             'location' => "Erie Hall",
             'link' => "http://uwindsor.ca/",
             'body' => "A super fun test event.",
             'author' => [
-                'id' => (string) $this->userId,
+                'id' => $this->userId,
                 'username' => 'TestUser',
                 'email' => 'test_user@fakemail.com'
             ]

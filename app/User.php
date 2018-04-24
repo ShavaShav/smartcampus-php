@@ -37,6 +37,11 @@ class User extends Model implements AuthenticatableContract,
      */
     protected $hidden = ['password', 'remember_token'];
 
+    // Always use integer for id.
+    protected $casts = [
+        'id' => 'integer'
+    ];
+
     /**
      * Get the events posted by user
      */
