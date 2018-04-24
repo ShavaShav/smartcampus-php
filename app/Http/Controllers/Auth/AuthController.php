@@ -25,40 +25,80 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request)
     {
-        $newUser = $this->user->create([
-            'username' => $request->get('username'),
-            'email' => $request->get('email'),
-            'password' => bcrypt($request->get('password'))
+        $userData = $request->get('user');
+
+        $user = $this->user->create([
+            'username' => $userData['username'],
+            'email' => $userData['email'],
+            'password' => bcrypt($userData['password'])
         ]);
 
-        if (!$newUser) {
-            return response()->json(['failed_to_create_new_user'], 500);
+        if (!$user) {
+            return response()->json(['error' => 'failed_to_create_new_user'], 500);
         }
 
-        return response()->json([
-            'token' => $this->jwtauth->fromUser($newUser)
-        ]);
+        // Append token to User
+        $user['token'] = $this->jwtauth->fromUser($user);
+
+        return response()->json(compact('user'));
     }
 
     public function login(LoginRequest $request)
     {
+        $userData = $request->get('user');
+
         // get user credentials: email, password
-        $credentials = $request->only('email', 'password');
+        $credentials = [ 
+            'email' => $userData['email'],
+            'password' => $userData['password']
+        ];
+        
         $token = null;
+        $user = null;
 
         try {
 
             $token = $this->jwtauth->attempt($credentials);
 
-            if (!$token) {
-                return response()->json(['invalid_email_or_password'], 422);
+            if ($token) {
+                // Get user from token, append token
+                $user = $this->jwtauth->toUser($token);
+                $user['token'] = $token;
+            } else {
+                return response()->json(['error' => 'invalid_email_or_password'], 422);
             }
 
         } catch (JWTAuthException $e) {
             
-            return response()->json(['failed_to_create_token'], 500);
+            return response()->json(['error' => 'failed_to_create_token'], 500);
         }
         
-        return response()->json(compact('token'));
+        return response()->json(compact('user'));
+    }
+
+    public function logout(Request $request)
+    {
+        // Get token from header
+        $token = $this->jwtauth->getToken();
+
+        // Attempt to invalidate. User will need new token next time
+        try {
+            $this->jwtauth->invalidate($token);
+            return response()->json(['message'=> 'logout_successful']);
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'failed_to_logout'], 500);
+        }
+    }
+
+    public function show(Request $request)
+    {
+        // Get user from bearer token
+        $token = $this->jwtauth->getToken();
+        $user = $this->jwtauth->toUser($token);
+
+        // Append token to User
+        $user['token'] = (string) $token;
+        
+        return response()->json(compact('user'));
     }
 }

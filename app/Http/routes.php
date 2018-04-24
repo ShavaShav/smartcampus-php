@@ -21,4 +21,11 @@ Route::group(['prefix' => 'api', 'middleware' => 'cors'], function ()
 	Route::post('events', 'EventController@store');
 	Route::put('events/{id}', 'EventController@update');
 	Route::delete('events/{id}', 'EventController@delete');
+
+	// Authenticated routes
+	Route::group(['middleware' => ['jwt.auth']], function()
+	{
+	    Route::post('user/logout', 'Auth\AuthController@logout');
+	    Route::get('user', 'Auth\AuthController@show');
+	});
 });
