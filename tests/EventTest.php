@@ -56,20 +56,22 @@ class EventTest extends TestCase
              ->assertResponseOk();
 
         $this->shouldReturnJson();
-
-        // Assert on structure of response
-        $responseJson = json_decode($this->response->content());
-        $this->assertObjectHasAttribute('event', $responseJson);
-        $this->assertObjectHasAttribute('id', $responseJson->event);
-        $this->assertObjectHasAttribute('title', $responseJson->event);
-        $this->assertObjectHasAttribute('location', $responseJson->event);
-        $this->assertObjectHasAttribute('link', $responseJson->event);
-        $this->assertObjectHasAttribute('body', $responseJson->event);
-        $this->assertObjectHasAttribute('created_at', $responseJson->event);
-        $this->assertObjectHasAttribute('updated_at', $responseJson->event);
-        $this->assertObjectHasAttribute('id', $responseJson->event->author);
-        $this->assertObjectHasAttribute('username', $responseJson->event->author);
-        $this->assertObjectHasAttribute('email', $responseJson->event->author);
+        $this->assertJsonStructure([
+            'event' => [
+                'id',
+                'title',
+                'location',
+                'link',
+                'body',
+                'created_at',
+                'updated_at',
+                'author' => [
+                    'id',
+                    'username',
+                    'email'
+                ]
+            ]
+        ]);
         
         // Assert on actual event details
         $this->seeJsonContains([
@@ -97,24 +99,28 @@ class EventTest extends TestCase
         $this->get('/api/events')
              ->assertResponseOk();
 
-        // Assert response contains an array called 'events'
-        $responseJson = json_decode($this->response->content());
-        $this->assertObjectHasAttribute('events', $responseJson);
-        $this->assertTrue(is_array($responseJson->events));
-        // Assert on structure of first event
-        $this->assertObjectHasAttribute('id', $responseJson->events[0]);
-        $this->assertObjectHasAttribute('title', $responseJson->events[0]);
-        $this->assertObjectHasAttribute('location', $responseJson->events[0]);
-        $this->assertObjectHasAttribute('link', $responseJson->events[0]);
-        $this->assertObjectHasAttribute('body', $responseJson->events[0]);
-        $this->assertObjectHasAttribute('created_at', $responseJson->events[0]);
-        $this->assertObjectHasAttribute('updated_at', $responseJson->events[0]);
-        $this->assertObjectHasAttribute('id', $responseJson->events[0]->author);
-        $this->assertObjectHasAttribute('username', $responseJson->events[0]->author);
-        $this->assertObjectHasAttribute('email', $responseJson->events[0]->author);
+        // Assert on JSON structure
+        $this->shouldReturnJson();
+        $this->assertJsonStructure([
+            'events' => [
+                '*' => [
+                    'id',
+                    'title',
+                    'location',
+                    'link',
+                    'body',
+                    'created_at',
+                    'updated_at',
+                    'author' => [
+                        'id',
+                        'username',
+                        'email'
+                    ]
+                ]
+            ]
+        ]);
 
         // should see the created event in list
-        $this->shouldReturnJson();
         $this->seeJsonContains([
             'id' => (string) $this->eventId,
             'title' => "Test Event",
@@ -155,11 +161,22 @@ class EventTest extends TestCase
 
         // Response should contain all of the same fields as request
         $this->shouldReturnJson();
-        $this->seeJsonContains($event);
-
-        // Assert that the id was also returned in event object
-        $responseJson = json_decode($this->response->content());
-        $this->assertObjectHasAttribute('id', $responseJson->event);
+        $this->assertJsonStructure([
+            'event' => [
+                'id',
+                'title',
+                'location',
+                'link',
+                'body',
+                'created_at',
+                'updated_at',
+                'author' => [
+                    'id',
+                    'username',
+                    'email'
+                ]         
+            ]
+        ]);
     }
 
     /**
