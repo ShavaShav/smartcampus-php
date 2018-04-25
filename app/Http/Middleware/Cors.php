@@ -16,7 +16,7 @@ class Cors
     public function handle($request, Closure $next)
     {
         // Disable for testing environment
-        if (env('APP_ENV') === 'testing') {
+        if (\App::environment('testing')) {
             return $next($request);
         }
 

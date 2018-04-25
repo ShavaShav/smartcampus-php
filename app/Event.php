@@ -27,12 +27,6 @@ class Event extends Model
     	'author_id'
     ];
 
-    // Always use integer for id.
-    protected $casts = [
-        'id' => 'integer',
-        'author_id' => 'integer'
-    ];
-
     /**
      * The attributes excluded from the model's JSON form.
      *

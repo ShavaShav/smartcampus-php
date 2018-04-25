@@ -56,7 +56,7 @@ class EventTest extends TestCase
              ->assertResponseOk();
 
         $this->shouldReturnJson();
-        $this->assertJsonStructure([
+        $this->seeJsonStructure([
             'event' => [
                 'id',
                 'title',
@@ -101,7 +101,7 @@ class EventTest extends TestCase
 
         // Assert on JSON structure
         $this->shouldReturnJson();
-        $this->assertJsonStructure([
+        $this->seeJsonStructure([
             'events' => [
                 '*' => [
                     'id',
@@ -161,7 +161,7 @@ class EventTest extends TestCase
 
         // Response should contain all of the same fields as request
         $this->shouldReturnJson();
-        $this->assertJsonStructure([
+        $this->seeJsonStructure([
             'event' => [
                 'id',
                 'title',

@@ -19,7 +19,7 @@ class EventsTableSeeder extends Seeder
         $faker = \Faker\Factory::create();
 
         // List of real user ids
-        $userIDs= DB::table('users')->lists('id');
+        $userIDs= DB::table('users')->pluck('id');
 
         // Create a few events in our database:
         for ($i = 0; $i < 50; $i++) {

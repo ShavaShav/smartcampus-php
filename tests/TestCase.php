@@ -35,36 +35,4 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
         parent::tearDown();
     }
 
-    /**
-     * Asserts response json contains given structure
-     * Ported from future version of laravel for 5.1 - use with caution
-     * @param  array|null $structure    
-     * @param  stdObject  $responseJson
-     * @return TestCase   $this                  
-     */
-    protected function assertJsonStructure(array $structure = null, $responseJson = null) {
-        if (is_null($structure)) {
-            return $this->assertJson($this->json());
-        }
-
-        if (is_null($responseJson)) {
-            $responseJson = json_decode($this->response->content());
-        }
-
-        foreach ($structure as $key => $value) {
-            if (is_array($value) && $key === '*') {
-                $this->assertInternalType('array', $responseJson);
-                foreach ($responseJson as $responseJsonItem) {
-                    $this->assertJsonStructure($structure['*'], $responseJsonItem);
-                }
-            } else if (is_array($value)) {
-                $this->assertObjectHasAttribute($key, $responseJson);
-                $this->assertJsonStructure($structure[$key], $responseJson->$key);
-            } else {
-                $this->assertObjectHasAttribute($value, $responseJson);
-            }
-        }
-
-        return $this;
-    }
 }

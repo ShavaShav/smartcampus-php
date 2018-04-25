@@ -4,4 +4,4 @@ A RestAPI backend for uWindsor's SmartCampus event social network, written in PH
 
 See [the wiki](https://github.com/SmartCampusUWindsor/smartcampus-api/wiki/) for Developer information.
 
-See [Laravel 5.1 documentation](https://laravel.com/docs/5.1/) for framework information.
+See [Laravel 5.2 documentation](https://laravel.com/docs/5.2/) for framework information.

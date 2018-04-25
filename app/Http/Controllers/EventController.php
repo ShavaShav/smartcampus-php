@@ -45,20 +45,22 @@ class EventController extends Controller
         // Create in database.
         $event = Event::create($eventData);
 
-        // Get the event with the author info for json response
-        $event = Event::with('author')->find($event->id);
+        // Embed author for response
+        $event->load('author');
+
         return response()->json(compact('event'));
     }
 
     /**
      * Display the specified Event's JSON.
      *
-     * @param  int  $id
+     * @param  Event  $event
      * @return Response
      */
-    public function show($id)
+    public function show(Event $event)
     {
-        $event = Event::with('author')->findOrFail($id);
+        // Embed author for response
+        $event->load('author');
 
         return response()->json(compact('event'));
     }
@@ -67,7 +69,7 @@ class EventController extends Controller
      * Update the specified Event in the database.
      *
      * @param  Request  $request
-     * @param  int  $id
+     * @param  Event  $event
      * @return Response
      */
     public function update(Request $request, Event $event)
@@ -81,13 +83,11 @@ class EventController extends Controller
     /**
      * Remove the specified Event from the database.
      *
-     * @param  int  $id
+     * @param  Event  $event
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(Event $event)
     {
-        $event = Event::findOrFail($id);
-
         $token = JWTAuth::getToken();
         $user = JWTAuth::toUser($token);
 
