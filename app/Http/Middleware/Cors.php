@@ -15,6 +15,11 @@ class Cors
      */
     public function handle($request, Closure $next)
     {
+        // Disable for testing environment
+        if (env('APP_ENV') === 'testing') {
+            return $next($request);
+        }
+
         header("Access-Control-Allow-Origin: *");
 
         $headers = [

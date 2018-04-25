@@ -5,66 +5,66 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Http\Requests\NewEventRequest;
 use App\Http\Controllers\Controller;
+
 use App\Event;
+use JWTAuth;
 
 class EventController extends Controller
 {
+
     /**
-     * Display a listing of the resource.
+     * Display a listing of all Events, most recent first.
      *
      * @return Response
      */
     public function index()
     {
-        return Event::all();
+        $events = Event::with('author')
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+
+        return response()->json(compact('events'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Store a newly created Event in the database.
      *
+     * @param  NewEventRequest  $request
      * @return Response
      */
-    public function create()
+    public function store(NewEventRequest $request)
     {
-        //
+        $eventData = $request->get('event');
+
+        // Add user to event fields from token
+        $token = JWTAuth::getToken();
+        $eventData['author_id'] = JWTAuth::toUser($token)->id;
+
+        // Create in database.
+        $event = Event::create($eventData);
+
+        // Get the event with the author info for json response
+        $event = Event::with('author')->find($event->id);
+        return response()->json(compact('event'));
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        return Event::create($request->all());
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show(Event $event)
-    {
-        return $event;
-    }
-
-    /**
-     * Show the form for editing the specified resource.
+     * Display the specified Event's JSON.
      *
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function show($id)
     {
-        //
+        $event = Event::with('author')->findOrFail($id);
+
+        return response()->json(compact('event'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified Event in the database.
      *
      * @param  Request  $request
      * @param  int  $id
@@ -72,21 +72,32 @@ class EventController extends Controller
      */
     public function update(Request $request, Event $event)
     {
-        $event->update($request->all());
+        // TODO: v2
+        // $event->update($request->all());
 
-        return response()->json($event, 200);
+        // return response()->json($event, 200);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified Event from the database.
      *
      * @param  int  $id
      * @return Response
      */
-    public function destroy(Event $event)
+    public function destroy($id)
     {
-        $event->delete();
+        $event = Event::findOrFail($id);
 
-        return response()->json(null, 204);
+        $token = JWTAuth::getToken();
+        $user = JWTAuth::toUser($token);
+
+        if ($event->author_id == $user->id) {
+            // Event belongs to user
+            $event->delete();
+
+            return response()->json(['message' => 'delete_successful'], 200);
+        } else {
+            return response()->json(['error' => 'delete_forbidden'], 403);
+        }
     }
 }

@@ -6,5 +6,47 @@ use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
-    protected $fillable = ['title', 'body'];
+	/**
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    protected $table = 'events';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+    	'title', 
+    	'time', 
+    	'location', 
+    	'link', 
+    	'body', 
+    	'author_id'
+    ];
+
+    // Always use integer for id.
+    protected $casts = [
+        'id' => 'integer',
+        'author_id' => 'integer'
+    ];
+
+    /**
+     * The attributes excluded from the model's JSON form.
+     *
+     * @var array
+     */
+    protected $hidden = ['author_id'];
+
+    /**
+     * Get the user that posted the event
+     */
+    public function author()
+    {
+        // Return minimal user details
+        return $this->belongsTo('App\User')
+                    ->select(array('id', 'username', 'email'));
+    }
 }
