@@ -16,7 +16,7 @@ class CreateEventsTable extends Migration
             $table->increments('id');
             $table->integer('author_id')->unsigned();
             $table->string('title');
-            $table->timestamp('time');
+            $table->timestamp('time')->useCurrent();
             $table->string('location');
             $table->string('link');
             $table->text('body');

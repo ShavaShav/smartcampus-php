@@ -12,8 +12,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Model::unguard();
-
         //disable foreign key check for seeders
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
@@ -21,7 +19,5 @@ class DatabaseSeeder extends Seeder
         $this->call(EventsTableSeeder::class);
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-
-        Model::reguard();
     }
 }

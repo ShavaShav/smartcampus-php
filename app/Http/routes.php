@@ -17,7 +17,7 @@ Route::group(['prefix' => 'api', 'middleware' => 'cors'], function ()
 	Route::post('user/register', 'Auth\AuthController@register');
 
 	Route::get('events', 'EventController@index');
-	Route::get('events/{id}', 'EventController@show');
+	Route::get('events/{event}', 'EventController@show');
 
 	// Authenticated routes
 	Route::group(['middleware' => ['jwt.auth']], function()
@@ -26,6 +26,6 @@ Route::group(['prefix' => 'api', 'middleware' => 'cors'], function ()
 	    Route::get('user', 'Auth\AuthController@show');
 
 	    Route::post('events', 'EventController@store');
-	    Route::delete('events/{id}', 'EventController@destroy');
+	    Route::delete('events/{event}', 'EventController@destroy');
 	});
 });
