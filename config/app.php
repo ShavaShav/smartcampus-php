@@ -169,7 +169,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        // JWT provider
+        /*
+         * Third-party Service Providers...
+         */
         \Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
     
     ],

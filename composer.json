@@ -50,7 +50,8 @@
         "post-clone": [
             "composer install",
             "php -r \"copy('.env.example', '.env');\"",
-            "php artisan key:generate"
+            "php artisan key:generate",
+            "php artisan jwt:generate"
         ],
         "test": [
             "vendor\\bin\\phpunit -v --debug --colors=always"
