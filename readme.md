@@ -1,6 +1,8 @@
-# SmartCampus API
+# smartcampus-api
 
-A RestAPI backend for uWindsor's SmartCampus event social network, written in PHP and compatible with MyWeb shared hosting.
+[![Build Status](https://travis-ci.org/SmartCampusUWindsor/smartcampus-api.svg?branch=master)](https://travis-ci.org/SmartCampusUWindsor/smartcampus-api)
+
+A RestAPI backend for uWindsor's SmartCampus event social network, written in PHP.
 
 See [the wiki](https://github.com/SmartCampusUWindsor/smartcampus-api/wiki/) for Developer information.
 
