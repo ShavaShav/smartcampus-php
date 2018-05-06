@@ -20,7 +20,7 @@ Route::group(['prefix' => 'api'], function ()
 	Route::get('events/{event}', 'EventController@show');
 
 	// Authenticated routes
-	Route::group(['middleware' => ['jwt.auth']], function()
+	Route::group(['middleware' => ['jwt']], function()
 	{
 	    Route::post('user/logout', 'Auth\AuthController@logout');
 	    Route::get('user', 'Auth\AuthController@show');

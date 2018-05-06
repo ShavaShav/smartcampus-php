@@ -6,7 +6,7 @@ use App\User;
 
 class UserTest extends TestCase
 {
-    private $JWT_REGEX = '/[\'\"]token[\'\"]:[\'\"][a-zA-Z0-9\-_]+\.[a-zA-Z0-9\-_]+\.[a-zA-Z0-9\-_]+[\'\"]/';
+    private $JWT_REGEX = '/Bearer [a-zA-Z0-9\-_]+\.[a-zA-Z0-9\-_]+\.[a-zA-Z0-9\-_]+/';
 
     /**
      * As a guest, should be able to register a new user
@@ -28,7 +28,7 @@ class UserTest extends TestCase
              ->assertResponseOk();
 
         // Assert that token was returned
-        $this->assertRegExp($this->JWT_REGEX, $this->response->getContent());
+        $this->assertRegExp($this->JWT_REGEX, $this->response->headers->get('Authorization'));
     }
 
     /**
@@ -57,6 +57,6 @@ class UserTest extends TestCase
              ->assertResponseOk();
 
         // Assert that token was returned
-        $this->assertRegExp($this->JWT_REGEX, $this->response->getContent());
+        $this->assertRegExp($this->JWT_REGEX, $this->response->headers->get('Authorization'));
     }
 }

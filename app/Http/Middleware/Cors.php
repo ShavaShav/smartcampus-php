@@ -23,7 +23,8 @@ class Cors
         $headers = [
             'Access-Control-Allow-Origin'  =>  '*',
             'Access-Control-Allow-Methods' => 'POST, GET, PUT, DELETE, OPTIONS',
-            'Access-Control-Allow-Headers' => 'Content-Type, Authorization, Origin'
+            'Access-Control-Allow-Headers' => 'Content-Type, Authorization, Origin',
+            'Access-Control-Expose-Headers' => 'Authorization'
         ];
 
         $response = $next($request);

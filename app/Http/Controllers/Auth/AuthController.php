@@ -37,10 +37,11 @@ class AuthController extends Controller
             return response()->json(['error' => 'failed_to_create_new_user'], 500);
         }
 
-        // Append token to User
-        $user['token'] = $this->jwtauth->fromUser($user);
+        // Generate a token
+        $token = $this->jwtauth->fromUser($user);
 
-        return response()->json(compact('user'));
+        return response()->json(compact('user'))
+                         ->header('Authorization', 'Bearer '.$token);
     }
 
     public function login(LoginRequest $request)
@@ -63,7 +64,8 @@ class AuthController extends Controller
             if ($token) {
                 // Get user from token, append token
                 $user = $this->jwtauth->toUser($token);
-                $user['token'] = $token;
+                return response()->json(compact('user'))
+                                 ->header('Authorization', 'Bearer '.$token);
             } else {
                 return response()->json(['error' => 'invalid_email_or_password'], 422);
             }
@@ -92,12 +94,8 @@ class AuthController extends Controller
 
     public function show(Request $request)
     {
-        // Get user from bearer token
         $token = $this->jwtauth->getToken();
         $user = $this->jwtauth->toUser($token);
-
-        // Append token to User
-        $user['token'] = (string) $token;
         
         return response()->json(compact('user'));
     }
