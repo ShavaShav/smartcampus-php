@@ -15,6 +15,7 @@ Route::group(['prefix' => 'api'], function ()
 {
 	Route::post('user/login', 'Auth\AuthController@login');
 	Route::post('user/register', 'Auth\AuthController@register');
+	Route::post('user/refresh', 'Auth\AuthController@refresh');
 
 	Route::get('events', 'EventController@index');
 	Route::get('events/{event}', 'EventController@show');

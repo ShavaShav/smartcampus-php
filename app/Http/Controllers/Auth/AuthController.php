@@ -10,7 +10,8 @@ use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Controllers\Controller;
 use Tymon\JWTAuth\JWTAuth;
-use Tymon\JWTAuth\JWTAuthException;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 
 class AuthController extends Controller
 {
@@ -68,12 +69,33 @@ class AuthController extends Controller
                 return response()->json(['error' => 'invalid_email_or_password'], 422);
             }
 
-        } catch (JWTAuthException $e) {
+        } catch (JWTException $e) {
             
             return response()->json(['error' => 'failed_to_create_token'], 500);
         }
         
         return response()->json(compact('user'));
+    }
+
+    public function refresh(Request $request)
+    {
+        // No JWT middleware used (since token could be expired)
+        if (! $token = $this->jwtauth->getToken()) {
+            return response()->json(['error' => 'token_not_provided'], 400);
+        }
+
+        // Attempt to refresh. See config/jwt for expiration times
+        try {
+            $newToken = $this->jwtauth->refresh($token);
+            $user = $this->jwtauth->toUser($newToken);
+
+            $user['token'] = (string) $newToken;
+            return response()->json(compact('user'));
+        } catch (TokenExpiredException $e) {
+            return response()->json(['error' => 'token_expired'], 401);
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'token_invalid'], 400);
+        }
     }
 
     public function logout(Request $request)
