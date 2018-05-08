@@ -64,6 +64,18 @@ return [
             'strict'    => false,
         ],
 
+        'travis' => [
+            'driver'    => 'mysql',
+            'host'      => 'localhost',
+            'database'  => 'smartcampus_test',
+            'username'  => 'root',
+            'password'  => '',
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+            'strict'    => false,
+        ],
+
         'pgsql' => [
             'driver'   => 'pgsql',
             'host'     => env('DB_HOST', 'localhost'),

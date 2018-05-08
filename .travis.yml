@@ -12,4 +12,7 @@ before_script:
   - mysql -e 'create database smartcampus_test;'
 
 script:
-  - DB_CONNECTION=mysql DB_DATABASE=smartcampus_test DB_USERNAME=root DB_PASSWORD= vendor/bin/phpunit --debug
+  - vendor/bin/phpunit -c phpunit-travis.xml --debug
+
+after_script:
+  - vendor/bin/php-coveralls -vvv

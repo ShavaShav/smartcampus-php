@@ -12,6 +12,7 @@
     "require-dev": {
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
+        "php-coveralls/php-coveralls": "^2.0",
         "phpunit/phpunit": "~4.0",
         "phpspec/phpspec": "~2.1",
         "symfony/dom-crawler": "~3.0",
@@ -55,6 +56,10 @@
         ],
         "test": [
             "vendor\\bin\\phpunit -v --debug --colors=always"
+        ],
+        "coverage": [
+            "vendor\\bin\\phpunit --coverage-clover tests/logs/clover.xml",
+            "vendor\\bin\\php-coveralls -vvv --dry-run"
         ]
     },
     "config": {
