@@ -46,7 +46,8 @@
             "php -r \"copy('.env.example', '.env');\""
         ],
         "post-create-project-cmd": [
-            "php artisan key:generate"
+            "php artisan key:generate",
+            "php artisan jwt:generate"
         ],
         "post-clone": [
             "composer install",
@@ -55,11 +56,11 @@
             "php artisan jwt:generate"
         ],
         "test": [
-            "vendor\\bin\\phpunit -v --debug --colors=always"
+            "phpunit -v --debug --colors=always"
         ],
         "coverage": [
-            "vendor\\bin\\phpunit --coverage-clover tests/logs/clover.xml",
-            "vendor\\bin\\php-coveralls -vvv --dry-run"
+            "phpunit --coverage-clover tests/logs/clover.xml",
+            "php-coveralls -vvv --dry-run"
         ]
     },
     "config": {
