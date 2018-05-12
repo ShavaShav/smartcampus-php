@@ -14,7 +14,8 @@ class EventTest extends TestCase
     private $token = null;     // jwt for test user
     private $userId = null;    // id of test user
     private $eventId = null;   // id of test event
-    private $eventTime = null; // timestamp for event
+    private $eventTimeStart = null; // timestamp for event
+    private $eventTimeEnd = null;
 
     // TODO: Replace with seeder once sqllite/mysql foreign key check issue resolved   
     public function setUp()
@@ -28,11 +29,16 @@ class EventTest extends TestCase
             'password' => bcrypt('my_pass_2345')
         ]);
 
-        $this->eventTime = Carbon::now()->addDays(1)->toDateTimeString();
+        $this->eventTimeStart = Carbon::now()->addDays(1)->toDateTimeString();
+
+        $this->eventTimeEnd = Carbon::now()->addDays(1)
+            ->addHours(1)
+            ->toDateTimeString();
 
         $event = Event::create([
             'title' => "Test Event",
-            'time' => $this->eventTime, 
+            'start_time' => $this->eventTimeStart,
+            'end_time' => $this->eventTimeEnd,  
             'location' => "Erie Hall",
             'link' => "http://uwindsor.ca/",
             'body' => "A super fun test event.",
@@ -61,6 +67,8 @@ class EventTest extends TestCase
                 'id',
                 'title',
                 'location',
+                'start_time',
+                'end_time',
                 'link',
                 'body',
                 'created_at',
@@ -77,7 +85,8 @@ class EventTest extends TestCase
         $this->seeJsonContains([
             'id' => $this->eventId,
             'title' => "Test Event",
-            'time' => $this->eventTime, 
+            'start_time' => $this->eventTimeStart,
+            'end_time' => $this->eventTimeEnd,   
             'location' => "Erie Hall",
             'link' => "http://uwindsor.ca/",
             'body' => "A super fun test event.",
@@ -107,6 +116,8 @@ class EventTest extends TestCase
                     'id',
                     'title',
                     'location',
+                    'start_time',
+                    'end_time',
                     'link',
                     'body',
                     'created_at',
@@ -124,7 +135,8 @@ class EventTest extends TestCase
         $this->seeJsonContains([
             'id' => $this->eventId,
             'title' => "Test Event",
-            'time' => $this->eventTime, 
+            'start_time' => $this->eventTimeStart,
+            'end_time' => $this->eventTimeEnd, 
             'location' => "Erie Hall",
             'link' => "http://uwindsor.ca/",
             'body' => "A super fun test event.",
@@ -146,7 +158,8 @@ class EventTest extends TestCase
         // Make an event request with full details
         $event = [
             'title' => "Test Post Event",
-            'time' => Carbon::now()->addDays(1)->toDateTimeString(),
+            'start_time' => Carbon::now()->addDays(1)->toDateTimeString(),
+            'end_time' => Carbon::now()->addDays(1)->addHours(1)->toDateTimeString(),
             'location' => "CAW",
             'link' => "http://uwindsor.ca/",
             'body' => "A superer fun test event."
@@ -166,6 +179,8 @@ class EventTest extends TestCase
                 'id',
                 'title',
                 'location',
+                'start_time',
+                'end_time',
                 'link',
                 'body',
                 'created_at',

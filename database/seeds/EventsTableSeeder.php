@@ -28,13 +28,17 @@ class EventsTableSeeder extends Seeder
             $timestampDate = Carbon::createFromTimeStamp($faker->dateTimeBetween('-1 month', 'now')->getTimestamp());
 
             // Actual event occurs within couple months
-            $eventDate = $timestampDate->copy()
+            $eventDateStart = $timestampDate->copy()
                             ->addDays($faker->numberBetween(0, 60))
                             ->addHours($faker->numberBetween(0, 24));
 
+            $eventDateEnd = $eventDateStart->copy()
+                            ->addHours($faker->numberBetween(0, 5));
+
             Event::create([
                 'title' => $faker->sentence,
-                'time' => $eventDate->toDateTimeString(), 
+                'start_time' => $eventDateStart->toDateTimeString(), 
+                'end_time' => $eventDateEnd->toDateTimeString(), 
                 'location' => $faker->address,
                 'link' => $faker->url,
                 'body' => $faker->paragraph,

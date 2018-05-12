@@ -25,7 +25,8 @@ class NewEventRequest extends Request
     {
         return [
             'event.title' => 'required|max:255',
-            'event.time' => 'required|date|after:now',
+            'event.start_time' => 'required|date|after:now',
+            'event.end_time' => 'date|after:now',
             'event.location' => 'max:255',
             'event.link' => 'url|max:255',
             'event.body' => 'required|max:5000',

@@ -20,7 +20,8 @@ class Event extends Model
      */
     protected $fillable = [
     	'title', 
-    	'time', 
+    	'start_time', 
+        'end_time', 
     	'location', 
     	'link', 
     	'body', 
